@@ -4,13 +4,16 @@ const marketRoutes = require("./routes/marketRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 
 const app = express();
+
 app.use(cors({
-    origin:
-    "http://localhost:5173",
-    "https://price-alert-app-1.onrender.com/api"
+    origin: [
+        "http://localhost:5173",
+        "https://price-alert-app-tau.vercel.app/"
+    ]
 }));
 
 app.use(express.json());
+
 app.use("/api/market", marketRoutes);
 app.use("/api/alerts", alertRoutes);
 
