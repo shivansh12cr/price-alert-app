@@ -8,7 +8,7 @@ const app = express();
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://price-alert-app-tau.vercel.app/"
+        "https://price-alert-app-tau.vercel.app"
     ]
 }));
 
