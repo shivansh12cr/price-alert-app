@@ -9,7 +9,10 @@ const {
 const {
     sendAlertEmail
 } = require("../services/emailService");
-
+app.use(cors({
+    origin:
+    "https://price-alert-app-tau.vercel.app"
+}));
 
 cron.schedule("*/1 * * * *", async () => {
     console.log("Checking alerts...");
