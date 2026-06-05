@@ -6,7 +6,8 @@ const alertRoutes = require("./routes/alertRoutes");
 const app = express();
 app.use(cors({
     origin:
-    "https://price-alert-app-tau.vercel.app"
+    "http://localhost:5173",
+    "https://price-alert-app-1.onrender.com/api"
 }));
 
 app.use(express.json());
