@@ -1,20 +1,35 @@
 const axios = require("axios");
 
-const getCryptoPrice =
-async (symbol) => {
+const getCryptoPrice = async (symbol) => {
+
+    const map = {
+        BTCUSDT: "bitcoin",
+        ETHUSDT: "ethereum",
+        SOLUSDT: "solana",
+        BNBUSDT: "binancecoin",
+        XRPUSDT: "ripple",
+        DOGEUSDT: "dogecoin"
+    };
+
+    const coinId = map[symbol];
+
+    if (!coinId) {
+        throw new Error(
+            `Unsupported crypto symbol: ${symbol}`
+        );
+    }
 
     const response =
         await axios.get(
-            `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`
+            `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
         );
 
     return Number(
-        response.data.price
+        response.data[coinId].usd
     );
 };
 
-const getGoldPrice =
-async () => {
+const getGoldPrice = async () => {
 
     const response =
         await axios.get(
@@ -26,8 +41,7 @@ async () => {
     );
 };
 
-const getSilverPrice =
-async () => {
+const getSilverPrice = async () => {
 
     const response =
         await axios.get(
