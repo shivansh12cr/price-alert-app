@@ -3,12 +3,12 @@ const axios = require("axios");
 const getCryptoPrice = async (symbol) => {
 
     const map = {
-        BTCUSDT: "bitcoin",
-        ETHUSDT: "ethereum",
-        SOLUSDT: "solana",
-        BNBUSDT: "binancecoin",
-        XRPUSDT: "ripple",
-        DOGEUSDT: "dogecoin"
+        BTCUSDT: "BTC",
+        ETHUSDT: "ETH",
+        SOLUSDT: "SOL",
+        BNBUSDT: "BNB",
+        XRPUSDT: "XRP",
+        DOGEUSDT: "DOGE"
     };
 
     const coinId = map[symbol];
