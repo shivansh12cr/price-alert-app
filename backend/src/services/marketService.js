@@ -21,11 +21,11 @@ const getCryptoPrice = async (symbol) => {
 
     const response =
         await axios.get(
-            `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
+            `https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=USD`
         );
 
     return Number(
-        response.data[coinId].usd
+        response.data.usd
     );
 };
 
