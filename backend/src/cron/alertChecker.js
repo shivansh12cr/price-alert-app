@@ -21,6 +21,8 @@ cron.schedule("*/1 * * * *", async () => {
 
         for (const alert of alerts) {
 
+          try {
+
             let currentPrice;
 
             if (
@@ -97,6 +99,12 @@ cron.schedule("*/1 * * * *", async () => {
                     `ALERT TRIGGERED -> ${alert.symbol}`
                 );
             }
+
+          } catch (alertError) {
+            console.log(
+                `Failed checking alert ${alert._id} (${alert.symbol}): ${alertError.message}`
+            );
+          }
         }
     } catch (error) {
         console.log(error.message);
