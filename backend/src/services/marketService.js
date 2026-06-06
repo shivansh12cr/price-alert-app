@@ -11,9 +11,9 @@ const getCryptoPrice = async (symbol) => {
         DOGEUSDT: "DOGE"
     };
 
-    const coinId = map[symbol];
+    const coin = map[symbol.toUpperCase()];
 
-    if (!coinId) {
+    if (!coin) {
         throw new Error(
             `Unsupported crypto symbol: ${symbol}`
         );
@@ -25,7 +25,7 @@ const getCryptoPrice = async (symbol) => {
         );
 
     return Number(
-        response.data.usd
+        response.data.USD
     );
 };
 
