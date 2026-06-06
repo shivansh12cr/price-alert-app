@@ -1,44 +1,68 @@
 const axios = require("axios");
 
-const getCryptoPrice = async (symbol) => {
+const TWELVE_DATA_BASE = "https://api.twelvedata.com/price";
 
-    const response =
-        await axios.get(
-            `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${process.env.TWELVE_DATA_API_KEY}`
-        );
+const normalizeCryptoSymbol = (raw) => {
 
-    return Number(
-        response.data.price
-    );
+    const symbol = String(raw || "")
+        .trim()
+        .toUpperCase();
+
+    if (symbol.includes("/")) {
+        return symbol;
+    }
+
+    const quotes = ["USDT", "USDC", "USD"];
+
+    for (const quote of quotes) {
+        if (
+            symbol.length > quote.length &&
+            symbol.endsWith(quote)
+        ) {
+            return `${symbol.slice(0, -quote.length)}/USD`;
+        }
+    }
+
+    return `${symbol}/USD`;
 };
 
+const fetchPrice = async (symbol) => {
+
+    const response = await axios.get(TWELVE_DATA_BASE, {
+        params: {
+            symbol,
+            apikey: process.env.TWELVE_DATA_API_KEY
+        }
+    });
+
+    const data = response.data || {};
+    const price = Number(data.price);
+
+    if (data.status === "error" || !Number.isFinite(price)) {
+        throw new Error(
+            data.message ||
+                `Failed to fetch price for ${symbol}`
+        );
+    }
+
+    return price;
+};
+
+const getCryptoPrice = async (symbol) => {
+    return fetchPrice(normalizeCryptoSymbol(symbol));
+};
 
 const getGoldPrice = async () => {
-
-    const response =
-        await axios.get(
-            `https://api.twelvedata.com/price?symbol=XAU/USD&apikey=${process.env.TWELVE_DATA_API_KEY}`
-        );
-
-    return Number(
-        response.data.price
-    );
+    return fetchPrice("XAU/USD");
 };
 
 const getSilverPrice = async () => {
-
-    const response =
-        await axios.get(
-            `https://api.twelvedata.com/price?symbol=XAG/USD&apikey=${process.env.TWELVE_DATA_API_KEY}`
-        );
-
-    return Number(
-        response.data.price
-    );
+    return fetchPrice("XAG/USD");
 };
 
 module.exports = {
     getCryptoPrice,
     getGoldPrice,
-    getSilverPrice
+    getSilverPrice,
+    normalizeCryptoSymbol
 };
